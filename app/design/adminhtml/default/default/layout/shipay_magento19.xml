@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_register_index>
+        <reference name="content">
+            <block type="shipay_magento19/adminhtml_form_register" name="register" />
+        </reference>
+
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>shipay/shipay.js</name>
+            </action>
+        </reference>
+    </adminhtml_register_index>
+
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>shipay_magento19_order_view_tab</name>
+                <block>shipay_magento19/adminhtml_order_view_tab_contents</block>
+            </action>
+        </reference>
+        
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>shipay/shipay.js</name>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

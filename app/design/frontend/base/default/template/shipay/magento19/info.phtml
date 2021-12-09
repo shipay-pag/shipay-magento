@@ -1,0 +1,84 @@
+<?php
+$payment = $this->getPayment();
+$deepLink = $this->getDeepLink();
+$qrCodeBase64 = $this->getQrCodeBase64();
+$qrCodeText = $this->getQrCodeText();
+$walletName = $this->getWalletName();
+?>
+
+<style>
+    .button-shipay {
+        transition-duration: 0.4s;
+        background-color: white;
+        color: gray;
+        border: 1px solid gray;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .button-shipay:hover {
+        background-color: gray;
+        color: white;
+    }
+
+    .textarea {
+        border: 1px solid gray;
+        height: 52px;
+    }
+
+    .qrcode-base64 {
+        display: block;
+    }
+
+    .line {
+        display: inline-block;
+    }
+
+    .row {
+        display: inline-block;
+    }
+
+    .inputs {
+        padding: 5px;
+    }
+
+    .fieldset-border {
+        border: 2px solid;
+        padding: 5px;
+    }
+</style>
+
+<?php if ($payment->getMethod() == 'shipay_payments') : ?>
+    <fieldset class="fieldset-border">
+
+        <div class="inputs">
+            <h3>Shipay Pagamentos</h3>
+            <h4><?= strtoupper($walletName) ?></h4>
+        </div>
+
+        <div class="inputs">
+            <?php if ($deepLink != '') : ?>
+                <button class="button-shipay line" onclick="window.open('<?= $deepLink ?>');"> Link para pagamento </button>
+            <?php endif; ?>
+            <button class="button-shipay line" id="button-qrcode" onclick="openQrCodePopup()">Abrir QR Code</button>
+        </div>
+
+        <?php if ($deepLink == '') : ?>
+            <div class="inputs">
+                <textarea class="textarea row" readonly rows="1" name="qrcode-text" id="qrcode-text"><?= $qrCodeText ?></textarea>
+                <button class="button-shipay row" id="button-copy" onclick="copyTextSucess()">Copiar</button>
+            </div>
+        <?php endif; ?>
+
+        <input type="hidden" id="text-aux" value="<?= $qrCodeBase64 ?>"></input>
+
+    </fieldset>
+<?php endif; ?>
+
+<script>
+    function openQrCodePopup() {
+        var win = window.open("", "QR Code", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=790,height=800,top=center" + (screen.height - 400) + ",left=" + (screen.width - 840));
+        win.document.body.innerHTML = '<img class="qrcode-base64" id="qrcode-base64" src=' + document.getElementById('text-aux').value + ' />';
+    }
+</script>

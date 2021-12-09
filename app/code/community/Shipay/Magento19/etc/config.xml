@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<config>
+
+  <modules>
+    <Shipay_Magento19>
+      <version>0.1.0</version>
+    </Shipay_Magento19>
+  </modules>
+
+  <default>
+    <payment>
+      <shipay_payments>
+        <active>0</active>
+        <environment>sandbox</environment>
+        <debug>0</debug>
+        <capture_tax>1</capture_tax>
+        <payment_action>authorize</payment_action>
+        <pix_expiration>3600</pix_expiration>
+        <model>Shipay_Magento19_Model_Payment</model>
+      </shipay_payments>
+    </payment>
+  </default>
+
+  <global>
+
+    <blocks>
+      <shipay_magento19>
+        <class>Shipay_Magento19_Block</class>
+      </shipay_magento19>
+    </blocks>
+
+    <helpers>
+      <shipay_magento19>
+        <class>Shipay_Magento19_Helper</class>
+      </shipay_magento19>
+    </helpers>
+
+    <models>
+      <shipay_magento19>
+        <class>Shipay_Magento19_Model</class>
+      </shipay_magento19>
+    </models>
+
+    <resources>
+      <shipay_magento19>
+        <class>Shipay_Magento19_Resource</class>
+      </shipay_magento19>
+    </resources>
+
+    <validations>
+      <shipay_magento19>
+        <class>Shipay_Magento19_Validation</class>
+      </shipay_magento19>
+    </validations>
+
+    <services>
+      <shipay_magento19>
+        <class>Shipay_Magento19_Service</class>
+      </shipay_magento19>
+    </services>
+
+    <events>
+      <sales_order_place_after>
+        <observers>
+          <shipay_magento19>
+            <type>singleton</type>
+            <class>Shipay_Magento19_Model_Observer</class>
+            <method>updateStatusOrder</method>
+          </shipay_magento19>
+        </observers>
+      </sales_order_place_after>
+      <admin_system_config_section_save_after>
+        <observers>
+          <shipay_magento19>
+            <type>singleton</type>
+            <class>Shipay_Magento19_Model_Observer</class>
+            <method>generateAccessToken</method>  
+          </shipay_magento19>  
+        </observers>   
+      </admin_system_config_section_save_after>
+    </events>
+
+  </global>
+
+  <crontab>
+    <jobs>
+      <refresh_token_shipay>
+        <schedule>
+          <cron_expr>0 23 */2 * *</cron_expr>
+        </schedule>
+        <run>
+          <model>magento19/observer::refreshToken</model>
+        </run>
+      </refresh_token_shipay>
+      <verify_order_status>
+        <schedule>
+          <cron_expr>*/5 * * * *</cron_expr>
+        </schedule>
+        <run>
+          <model>magento19/observer::verifyOrderStatus</model>
+        </run>
+      </verify_order_status>
+    </jobs>
+  </crontab>
+
+  <frontend>
+    <routers>
+      <shipay_magento19>
+        <use>standard</use>
+        <args>
+          <module>Shipay_Magento19</module>
+          <frontName>shipaymagento19</frontName>
+        </args>
+      </shipay_magento19>
+    </routers>
+    <layout>
+      <updates>
+        <shipay_magento19>
+          <file>shipay_magento19.xml</file>
+        </shipay_magento19>
+      </updates>
+    </layout>
+  </frontend>
+
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Shipay_Magento19 before="Mage_Adminhtml">Shipay_Magento19_Adminhtml</Shipay_Magento19>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>
+
+  <adminhtml>
+    <layout>
+      <updates>
+        <shipay_magento19>
+          <file>shipay_magento19.xml</file>
+        </shipay_magento19>
+      </updates>
+    </layout>
+  </adminhtml>
+
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Shipay_Magento19>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Shipay_Magento19>
+    </modules>
+</config>

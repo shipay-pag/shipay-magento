@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<config>
+  <sections>
+    <payment>
+      <groups>
+
+        <shipay_payments translate="label" module="shipay_magento19">
+          <label>Shipay - Pagamentos</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>100</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>0</show_in_store>
+          <fields>
+            <active translate="label">
+              <label>Ativado</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>10</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </active>
+            <environment translate="label">
+              <label>Ambiente</label>
+              <frontend_type>select</frontend_type>
+              <source_model>shipay_magento19_block_adminhtml_form_field_environment</source_model>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </environment>
+            <title translate="label">
+              <label>Título</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>20</sort_order>
+              <comment>Título do método que irá aparecer para os clientes</comment>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <validate>required-entry</validate>
+            </title>
+            <capture_tax translate="label">
+              <label>Capturar documento (CPF ou CNPJ) no formulário de pagamento</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>60</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </capture_tax>
+            <pix_expiration translate="label">
+              <label>Configurar tempo de expiração do Pix</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>70</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <comment>O valor inserido deve ser em segundos. O valor mínimo será considerado 3600 segundos.</comment>
+              <validate>required-entry</validate>
+            </pix_expiration>
+            <debug translate="label">
+              <label>Debug</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>80</sort_order>
+              <comment>Requisições e respostas serão armazenadas em um arquivo "shipay.log" se marcar como sim</comment>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </debug>
+          </fields>
+        </shipay_payments>
+
+        <shipay_keys translate="label" module="shipay_magento19">
+          <label>Shipay - Chaves de Acesso</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>110</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>0</show_in_store>
+          <fields>
+            <access_key>
+              <label>Access Key do Cliente</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>10</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </access_key>
+            <secret_key>
+              <label>Secret Key do Cliente</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </secret_key>
+            <client_id translate="label">
+              <label>Client ID do Caixa</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>30</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </client_id>
+            <access_key_pdv translate="label">
+              <label>Access Key do Sistema de PDV</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>40</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </access_key_pdv>
+            <pos_product_id translate="label">
+              <label>ID do Sistema de PDV</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>50</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+            </pos_product_id>
+          </fields>
+        </shipay_keys>
+      </groups>
+    </payment>
+  </sections>
+</config>

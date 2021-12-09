@@ -1,0 +1,70 @@
+<?php
+$payment = $this->getPayment();
+$deepLink = $this->getDeepLink();
+$qrCodeBase64 = $this->getQrCodeBase64();
+$qrCodeText = $this->getQrCodeText();
+$walletName = $this->getWalletName();
+$orderId = $this->getOrderId();
+?>
+
+<style>
+    .button-shipay {
+        transition-duration: 0.4s;
+        background-color: white;
+        color: gray;
+        border: 1px solid gray;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .button-shipay:hover {
+        background-color: gray;
+        color: white;
+    }
+
+    .textarea {
+        border: 1px solid gray;
+        height: 52px;
+    }
+
+    .qrcode-base64 {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .row {
+        display: inline-block;
+    }
+
+    .inputs {
+        border: 10px solid transparent;
+    }
+</style>
+
+<?php if ($payment->getMethod() == 'shipay_payments') : ?>
+
+    <input type="hidden" id="orderid" name="orderid" value="<?= $orderId ?>">  
+
+    <div class="inputs">
+        <h4><?= strtoupper($walletName) ?></h4>
+        <h2 id="h2-text" style="display:none">Pagamento Realizado com Sucesso!</h2>
+    </div>
+
+    <?php if ($deepLink != '') : ?>
+        <div class="inputs">
+            <button id="button-deeplink" class="button-shipay" onclick="window.open('<?= $deepLink ?>');"> Link para pagamento </button>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($deepLink == '') : ?>
+        <div class="inputs">
+            <textarea class="textarea row" readonly rows="1" name="qrcode-text" id="qrcode-text"><?= $qrCodeText ?></textarea>
+            <button class="button-shipay row" id="button-copy" onclick="copyTextSucess()">Copiar PIX</button>
+        </div>
+    <?php endif; ?>
+
+    <img class="qrcode-base64" id='qrcode-base64' src='<?= $qrCodeBase64 ?>' />
+
+<?php endif; ?>

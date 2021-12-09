@@ -1,0 +1,70 @@
+<fieldset class="form-payment" id="payment_form_<?= $this->getMethodCode() ?>" style="display:none">
+
+    <style>
+        .inputs {
+            border: 8px solid transparent;
+        }
+
+        .row {
+            border: 15px solid transparent;
+            display: inline-block;
+        }
+
+        img.type_method {
+            border-radius: 2px;
+            background-color: #f3f3f3;
+            box-shadow: 1px 1px 2px #ececec;
+            opacity: 0.30;
+            -moz-opacity: 0.30;
+            filter: alpha(opacity=30);
+            width: 100px;
+            height: 100px;
+        }
+
+        .methods {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+
+    <?php
+    $arrayWallets = $this->getWallets();
+    $captureTax = $this->getFieldCaptureTax();
+    $arrayUsedWallets = [];
+    ?>
+
+    <div class="inputs">
+
+        <legend style="font-size: 16px">Selecione uma Forma de Pagamento</legend>
+
+        <input type="hidden" class="validate-method-payment" id="wallet-name" name="payment[wallet-name]" />
+        <input type="hidden" id="pix-dict-key" name="payment[pix-dict-key]" />
+
+        <div class="methods">
+            <?php foreach ($arrayWallets as $wallet) : ?>
+                <?php if ($wallet['active'] == 'true') : ?>
+                    <?php if (!in_array($wallet['wallet'], $arrayUsedWallets)) :
+                        $arrayUsedWallets[] = $wallet['wallet'];
+                    ?>
+
+                        <li class="row">
+                            <legend style="font-weight: bold"><?= $wallet['friendly_name'] ?></legend>
+                            <img class="type_method" onclick="typeMethodSelected(this)" id="<?= $wallet['wallet'] ?>" src="<?= $wallet['logo'] ?>" value="<?= $wallet['wallet'] ?>" />
+                        </li>
+
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+
+        <?php if ($captureTax == true) : ?>
+            <legend style="font-size: 14px">Documento do Cliente</legend>
+            <input type="text" id="client_document" onkeyup="maskDocument(this)" maxlength="18" class="validate-document" name="payment[client_document]" />
+        <?php endif; ?>
+    </div>
+
+    <script>
+        window.getWallets();
+    </script>
+
+</fieldset>
