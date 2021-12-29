@@ -19,8 +19,8 @@ class Shipay_Magento19_Resource_GetAccessTokenPdv {
    */
   public function generateAccessTokenPdv(): string {
     $request = [
-      'access_key' => Mage::getStoreConfig('payment/shipay_keys/access_key_pdv'),
-      'pos_product_id' => Mage::getStoreConfig('payment/shipay_keys/pos_product_id')
+      'access_key' => Mage::helper('core')->decrypt(Mage::getStoreConfig('payment/shipay_keys/access_key_pdv')),
+      'pos_product_id' => Mage::helper('core')->decrypt(Mage::getStoreConfig('payment/shipay_keys/pos_product_id'))
     ];
 
     $response = $this->doRequest(json_encode($request));

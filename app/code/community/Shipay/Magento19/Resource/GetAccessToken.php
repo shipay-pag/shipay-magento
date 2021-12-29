@@ -9,20 +9,7 @@ class Shipay_Magento19_Resource_GetAccessToken {
    * @return string
    */
   public function getAccessToken(): string {
-    try {
-      $accessToken = Mage::getStoreConfig('payment/shipay_keys/access_token');
-      if (!empty($accessToken)) {
-        if ($this->validateIfGenerateNewToken()) {
-          return $this->generateAccessToken();
-        } else {
-          return $accessToken;
-        }
-      } else {
-        return $this->generateAccessToken();
-      }
-    } catch (\Throwable $th) {
-      return $this->generateAccessToken();
-    }
+    return $this->generateAccessToken();
   }
 
   /**
@@ -31,16 +18,16 @@ class Shipay_Magento19_Resource_GetAccessToken {
    */
   public function generateAccessToken(): string {
     $request = [
-      'access_key' => Mage::getStoreConfig('payment/shipay_keys/access_key'),
-      'client_id' => Mage::getStoreConfig('payment/shipay_keys/client_id'),
-      'secret_key' => Mage::getStoreConfig('payment/shipay_keys/secret_key')
+      'access_key' => Mage::helper('core')->decrypt(Mage::getStoreConfig('payment/shipay_keys/access_key')),
+      'client_id' => Mage::helper('core')->decrypt(Mage::getStoreConfig('payment/shipay_keys/client_id')),
+      'secret_key' => Mage::helper('core')->decrypt(Mage::getStoreConfig('payment/shipay_keys/secret_key'))
     ];
 
     $response = $this->doRquest(json_encode($request));
 
     Mage::getModel('core/config')->saveConfig('payment/shipay_keys/access_token', $response['access_token']);
     Mage::getModel('core/config')->saveConfig('payment/shipay_keys/refresh_token', $response['refresh_token']);
-
+    
     return $response['access_token'];
   }
 
