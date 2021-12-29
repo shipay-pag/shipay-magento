@@ -82,7 +82,8 @@
           <fields>
             <access_key>
               <label>Access Key do Cliente</label>
-              <frontend_type>text</frontend_type>
+              <frontend_type>obscure</frontend_type>
+              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
               <sort_order>10</sort_order>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
@@ -90,7 +91,8 @@
             </access_key>
             <secret_key>
               <label>Secret Key do Cliente</label>
-              <frontend_type>text</frontend_type>
+              <frontend_type>obscure</frontend_type>
+              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
               <sort_order>20</sort_order>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
@@ -98,7 +100,8 @@
             </secret_key>
             <client_id translate="label">
               <label>Client ID do Caixa</label>
-              <frontend_type>text</frontend_type>
+              <frontend_type>obscure</frontend_type>
+              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
               <sort_order>30</sort_order>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
@@ -106,7 +109,8 @@
             </client_id>
             <access_key_pdv translate="label">
               <label>Access Key do Sistema de PDV</label>
-              <frontend_type>text</frontend_type>
+              <frontend_type>obscure</frontend_type>
+              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
               <sort_order>40</sort_order>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
@@ -114,7 +118,8 @@
             </access_key_pdv>
             <pos_product_id translate="label">
               <label>ID do Sistema de PDV</label>
-              <frontend_type>text</frontend_type>
+              <frontend_type>obscure</frontend_type>
+              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
               <sort_order>50</sort_order>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
