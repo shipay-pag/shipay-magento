@@ -85,6 +85,8 @@ class Shipay_Magento19_Model_Observer {
   protected function getOrderStatus($payment): string {
     $status = '';
     $status = $payment->getAdditionalInformation('status');
+    if($status !== null || $status == '') {
+    $status = 'pending';
     return $status;
   }
 }
