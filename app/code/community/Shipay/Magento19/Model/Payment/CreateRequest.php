@@ -23,7 +23,7 @@ class Shipay_Magento19_Model_Payment_CreateRequest {
       $quote->getReservedOrderId(),
       $quote->getBaseGrandTotal(),
       $data['wallet-name'],
-      $this->calculateCart($this->getShippingValue()),
+      $this->calculateCart(round($this->getShippingValue(),2)),
       $this->getExpiration(),
       $pixDictKey
     );
