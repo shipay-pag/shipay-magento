@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <config>
   <menu>
-    <shipay_magento19 translate="title" module="shipay_magento19">
-      <title>Shipay</title>
-      <sort_order>90</sort_order>
-      <children>
-        <shipay_form translate="title" module="shipay_magento19">
-          <title>Registro</title>
-          <sort_order>10</sort_order>
-          <action>adminhtml/register</action>
-        </shipay_form>
-      </children>
-    </shipay_magento19>
+<!--    <shipay_magento19 translate="title" module="shipay_magento19">-->
+<!--      <title>Shipay</title>-->
+<!--      <sort_order>90</sort_order>-->
+<!--      <children>-->
+<!--        <shipay_form translate="title" module="shipay_magento19">-->
+<!--          <title>Registro</title>-->
+<!--          <sort_order>10</sort_order>-->
+<!--          <action>adminhtml/register</action>-->
+<!--        </shipay_form>-->
+<!--      </children>-->
+<!--    </shipay_magento19>-->
   </menu>
 </config>

@@ -107,24 +107,24 @@
               <show_in_website>1</show_in_website>
               <show_in_store>0</show_in_store>
             </client_id>
-            <access_key_pdv translate="label">
-              <label>Access Key do Sistema de PDV</label>
-              <frontend_type>obscure</frontend_type>
-              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
-              <sort_order>40</sort_order>
-              <show_in_default>1</show_in_default>
-              <show_in_website>1</show_in_website>
-              <show_in_store>0</show_in_store>
-            </access_key_pdv>
-            <pos_product_id translate="label">
-              <label>ID do Sistema de PDV</label>
-              <frontend_type>obscure</frontend_type>
-              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
-              <sort_order>50</sort_order>
-              <show_in_default>1</show_in_default>
-              <show_in_website>1</show_in_website>
-              <show_in_store>0</show_in_store>
-            </pos_product_id>
+<!--            <access_key_pdv translate="label">-->
+<!--              <label>Access Key do Sistema de PDV</label>-->
+<!--              <frontend_type>obscure</frontend_type>-->
+<!--              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>-->
+<!--              <sort_order>40</sort_order>-->
+<!--              <show_in_default>1</show_in_default>-->
+<!--              <show_in_website>1</show_in_website>-->
+<!--              <show_in_store>0</show_in_store>-->
+<!--            </access_key_pdv>-->
+<!--            <pos_product_id translate="label">-->
+<!--              <label>ID do Sistema de PDV</label>-->
+<!--              <frontend_type>obscure</frontend_type>-->
+<!--              <backend_model>adminhtml/system_config_backend_encrypted</backend_model>-->
+<!--              <sort_order>50</sort_order>-->
+<!--              <show_in_default>1</show_in_default>-->
+<!--              <show_in_website>1</show_in_website>-->
+<!--              <show_in_store>0</show_in_store>-->
+<!--            </pos_product_id>-->
           </fields>
         </shipay_keys>
       </groups>
