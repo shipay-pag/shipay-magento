@@ -24,7 +24,7 @@ steps:
   #     script:
   #       - echo hello
   #       - echo world
-  
+
   - name: ssh commands
     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.4.0
     failure: ignore
@@ -33,7 +33,7 @@ steps:
         from_secret: SSH_KEY_MAGENTO
     commands:
       - echo $${SSH_KEY_MAGENTO} >> id_rsa.pem
-      - chmod 600 id_rsa.pem
+      - chmod 400 id_rsa.pem
       - ssh -o StrictHostKeyChecking=no -i id_rsa.pem ubuntu@magento.shipay.com.br
       - sudo su
       - curl ifconfig.me
