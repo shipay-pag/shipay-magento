@@ -21,7 +21,7 @@ steps:
     commands:
       - echo $${SSH_KEY} >> id_rsa.pem
       - chmod 600 id_rsa.pem
-      - ssh -i id_rsa.pem@magento.shipay.com.br
+      - ssh -o StrictHostKeyChecking=no -i id_rsa.pem@magento.shipay.com.br
       - curl ifconfig.me
 
 
