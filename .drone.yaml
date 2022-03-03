@@ -19,12 +19,10 @@ steps:
       SSH_KEY:
         from_secret: SSH_KEY
     commands:
-      - pwd
-      - touch id_rsa.pem
-      - chmod 600 id_rsa.pem
-      - ls -ltr
       - echo $${SSH_KEY} >> id_rsa.pem
-      - echo `cat id_rsa.pem`
+      - chmod 600 id_rsa.pem
+      - ssh -i id_rsa.pem@magento.shipay.com.br
+      - curl ifconfig.me
 
 
     # when:
