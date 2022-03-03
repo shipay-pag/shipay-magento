@@ -13,7 +13,7 @@ clone:
 steps:
 
   - name: ssh commands
-    image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+    image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.4.0
     environment:
       SSH_KEY:
         from_secret: SSH_KEY
