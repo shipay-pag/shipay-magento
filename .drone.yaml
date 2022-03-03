@@ -19,7 +19,7 @@ steps:
       username: ubuntu
       port: 22
     key:
-      from_secret: SSH_KEY
+      from_secret: ssh_key
       debug: true
       script:
         - echo hello
