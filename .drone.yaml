@@ -12,12 +12,6 @@ clone:
 
 steps:
 
-  - name: clone
-    image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:alpine-git-v2.32.0
-    commands:
-    - git clone $DRONE_REPO_LINK .
-    - git checkout $DRONE_SOURCE_BRANCH
-
   - name: ssh commands
     image: appleboy/drone-ssh
     settings:
@@ -28,13 +22,13 @@ steps:
       port: 22
       script:
         - echo "you can't see the steps."
-    when:
-      event:
-        - push
-        - pull_request
-        - promote
-      target:
-        - sandbox
+    # when:
+    #   event:
+    #     - push
+    #     - pull_request
+    #     - promote
+    #   target:
+    #     - sandbox
 
 
 
