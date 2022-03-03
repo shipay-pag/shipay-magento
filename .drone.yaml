@@ -13,15 +13,16 @@ clone:
 steps:
 
   - name: ssh commands
-    image: appleboy/drone-ssh
-    settings:
-      host: magento.shipay.com.br
-      username: ubuntu
-      key:
+    image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+    environment:
+      SSH_KEY:
         from_secret: SSH_KEY
-      port: 22
-      script:
-        - echo "you can't see the steps."
+    commands:
+      - cd cid/
+      - pwd
+      - echo $${SSH_KEY}
+
+
     # when:
     #   event:
     #     - push
