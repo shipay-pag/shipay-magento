@@ -19,7 +19,8 @@ steps:
       username: ubuntu
       port: 22
     key:
-      from_secret: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCPDTjhnCYZSNLa0oIF0SX0yU1cXpyqRgXwU8GR/SZhNYXEyeOxHNqyztGTkYyWH7Vr5cxnxbVMJgfds0K122YdQT/J8hU8PhmXClL3v2opPQrDIYGt6nIYDViqKOBtm/4gvD6M4muhppeG8Yr3URYVOmd/PQv97LXQAjNPDs5+m94IYShYavZn6Dc9XByRlHg0ZA2DnxCxSivJGbcc/RLHnC2faCc2Gh+tG3yROvEfxjR+hvQS5MUcXPbiSRMVhTtngxy4usKVeEhGgLiEf0SHW5XNKCzkodh9kWGUPAc4zAwFSlE6gxSc/GhwH1ZSa2nt7R2HK+mJMAru13ycI5Tz
+      from_secret: SSH_KEY
+      debug: true
       script:
         - echo hello
         - echo world
