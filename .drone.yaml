@@ -12,31 +12,31 @@ clone:
 
 steps:
 
-  - name: ssh commands
-    image: appleboy/drone-ssh
-    settings:
-      host: magento.shipay.com.br
-      username: ubuntu
-      port: 22
-    key:
-      from_secret: ssh_key
-      debug: true
-      script:
-        - echo hello
-        - echo world
-
   # - name: ssh commands
-  #   image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.4.0
-  #   failure: ignore
-  #   environment:
-  #     SSH_KEY:
-  #       from_secret: SSH_KEY
-  #   commands:
-  #     - echo $${SSH_KEY} >> id_rsa.pem
-  #     - chmod 600 id_rsa.pem
-  #     - ssh -o StrictHostKeyChecking=no -i id_rsa.pem ubuntu@magento.shipay.com.br
-  #     - sudo su
-  #     - curl ifconfig.me
+  #   image: appleboy/drone-ssh
+  #   settings:
+  #     host: magento.shipay.com.br
+  #     username: ubuntu
+  #     port: 22
+  #   key:
+  #     from_secret: ssh_key
+  #     debug: true
+  #     script:
+  #       - echo hello
+  #       - echo world
+  
+  - name: ssh commands
+    image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.4.0
+    failure: ignore
+    environment:
+      SSH_KEY_MAGENTO:
+        from_secret: SSH_KEY_MAGENTO
+    commands:
+      - echo $${SSH_KEY_MAGENTO} >> id_rsa.pem
+      - chmod 600 id_rsa.pem
+      - ssh -o StrictHostKeyChecking=no -i id_rsa.pem ubuntu@magento.shipay.com.br
+      - sudo su
+      - curl ifconfig.me
 
 
     # when:
