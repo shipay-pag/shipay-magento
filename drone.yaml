@@ -1,0 +1,332 @@
+---
+
+kind: pipeline
+type: kubernetes
+name: Start
+
+metadata:
+  namespace: droneci
+
+clone:
+  disable: true
+
+steps:
+  - name: ssh commands
+    image: appleboy/drone-ssh
+    settings:
+      host: magento.shipay.com.br
+      username: ubuntu
+      key:
+        from_secret: SSH_KEY
+      port: 22
+      script:
+        - echo "you can't see the steps."
+    when:
+      event:
+        - push
+        - pull_request
+        - promote
+      target:
+        - sandbox
+
+
+
+  # - name: clone
+  #   image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:alpine-git-v2.32.0
+  #   commands:
+  #   - git clone $DRONE_REPO_LINK .
+  #   - git checkout $DRONE_SOURCE_BRANCH
+  #   when:
+  #     event:
+  #       - pull_request
+  #     branch:
+  #       - master
+
+  # - name: notify pipeline start
+  #   image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+  #   environment:
+  #     CHAT_URL_PIPELINE_SPY:
+  #       from_secret: CHAT_URL_PIPELINE_SPY
+  #     CHAT_URL_DEPLOY_PRODUCTION:
+  #       from_secret: CHAT_URL_DEPLOY_PRODUCTION
+  #   commands:
+  #     - cd cid/
+  #     - chmod +x scripts/pipeline_notification.sh
+  #     - scripts/pipeline_notification.sh $${CHAT_URL_PIPELINE_SPY} ${DRONE_REPO_NAME} ${DRONE_COMMIT} "production"
+
+  # - name: bump develop pyproject
+  #   image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+  #   commands:
+  #     - chmod +x cid/scripts/auto_commit_prerelease.sh
+  #     - cid/scripts/auto_commit_prerelease.sh ${DRONE_COMMIT}
+  #   failure: ignore
+  #   when:
+  #     event:
+  #       - push
+  #     branch:
+  #       - develop
+
+  # - name: tag based on pyproject
+  #   image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+  #   commands:
+  #     - cd src
+  #     - export VERSION=`poetry version --short`
+  #     - git tag v`echo $${VERSION}`
+  #     - git push origin v`echo $${VERSION}`
+  #   failure: ignore
+  #   when:
+  #     event:
+  #       - push
+  #     branch:
+  #       - release/*
+  #       - hotfix/*
+
+# ---
+
+# kind: pipeline
+# type: kubernetes
+# name: Build
+
+# metadata:
+#   namespace: droneci
+
+# clone:
+#   disable: true
+
+# depends_on:
+#   - Start
+
+# steps:
+
+#   - name: clone
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:alpine-git-v2.32.0
+#     commands:
+#     - git clone $DRONE_REPO_LINK .
+#     - git checkout $DRONE_SOURCE_BRANCH
+#     when:
+#       event:
+#         - promote
+#         - tag
+
+#   - name: prepare-artifacts
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:plugins-ecr-v20.10.9
+#     settings:
+#       region: us-east-1
+#       repo: ${DRONE_REPO_NAME}
+#       registry: 028753429146.dkr.ecr.us-east-1.amazonaws.com
+#       dockerfile: Dockerfile
+#       tags:
+#         - ${DRONE_COMMIT}
+#       build_args_from_env:
+#         - PYPI_USER
+#         - PYPI_PASSWORD
+#       cache_from:
+#         - 028753429146.dkr.ecr.us-east-1.amazonaws.com/${DRONE_REPO_NAME}:${DRONE_COMMIT}
+#     environment:
+#       PYPI_USER:
+#         from_secret: pypi_username
+#       PYPI_PASSWORD:
+#         from_secret: pypi_password
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY
+#     when:
+#       event:
+#         - push
+#         - pull_request
+#         - promote
+#       target:
+#         - sandbox
+#         - quality
+
+#   - name: get poetry version
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+#     commands:
+#       - cd src/
+#       - echo v`poetry version --short` > ../.tags
+#     when:
+#       event:
+#         - tag
+
+#   - name: prepare-tagged-artifacts
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:plugins-ecr-v20.10.9
+#     settings:
+#       region: us-east-1
+#       repo: ${DRONE_REPO_NAME}
+#       registry: 028753429146.dkr.ecr.us-east-1.amazonaws.com
+#       dockerfile: Dockerfile
+#       build_args_from_env:
+#         - PYPI_USER
+#         - PYPI_PASSWORD
+#     environment:
+#       PYPI_USER:
+#         from_secret: pypi_username
+#       PYPI_PASSWORD:
+#         from_secret: pypi_password
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY
+#     when:
+#       event:
+#         - tag
+
+# ---
+
+# kind: pipeline
+# type: kubernetes
+# name: Deploy Development
+
+# depends_on:
+#   - Build
+
+# metadata:
+#   namespace: droneci
+
+# steps:
+
+#   - name: deploy manifests to sandbox
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+#     environment:
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID_development
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY_development
+#       K8S_DEVELOPMENT_CLUSTER_IDENTIFIER:
+#         from_secret: K8S_DEVELOPMENT_CLUSTER_IDENTIFIER
+#     commands:
+#       - cd cid/
+#       - aws eks update-kubeconfig $${K8S_DEVELOPMENT_CLUSTER_IDENTIFIER}
+#       - helm upgrade --install -n sandbox --create-namespace --set image.tag=${DRONE_COMMIT} -f ${DRONE_REPO_NAME}/values_sandbox.yaml ${DRONE_REPO_NAME} ./${DRONE_REPO_NAME}
+#     when:
+#       event:
+#         - promote
+#       target:
+#         - sandbox
+
+#   - name: deploy manifests to quality
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+#     environment:
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID_development
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY_development
+#       K8S_DEVELOPMENT_CLUSTER_IDENTIFIER:
+#         from_secret: K8S_DEVELOPMENT_CLUSTER_IDENTIFIER
+#     commands:
+#       - cd cid/
+#       - aws eks update-kubeconfig $${K8S_DEVELOPMENT_CLUSTER_IDENTIFIER}
+#       - helm upgrade --install -n quality --set image.tag=${DRONE_COMMIT} -f ${DRONE_REPO_NAME}/values_quality.yaml ${DRONE_REPO_NAME} ./${DRONE_REPO_NAME}
+#     when:
+#       event:
+#         - promote
+#       target:
+#         - quality
+
+#   - name: deploy tag manifests to quality
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+#     environment:
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID_development
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY_development
+#       K8S_DEVELOPMENT_CLUSTER_IDENTIFIER:
+#         from_secret: K8S_DEVELOPMENT_CLUSTER_IDENTIFIER
+#     commands:
+#       - cd src/
+#       - export VERSION=v`poetry version --short`
+#       - echo $${VERSION}
+#       - cd ../cid
+#       - aws eks update-kubeconfig $${K8S_DEVELOPMENT_CLUSTER_IDENTIFIER}
+#       - helm upgrade --install -n quality --create-namespace --set image.tag=`echo $${VERSION}` -f ${DRONE_REPO_NAME}/values_quality.yaml ${DRONE_REPO_NAME} ./${DRONE_REPO_NAME}
+#     when:
+#       event:
+#         - tag
+
+# ---
+
+# kind: pipeline
+# type: kubernetes
+# name: Deploy Production
+
+# depends_on:
+#   - Build
+
+# metadata:
+#   namespace: droneci
+
+# clone:
+#   disable: true
+
+# steps:
+
+#   - name: clone
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:alpine-git-v2.32.0
+#     commands:
+#     - git clone $DRONE_REPO_LINK .
+#     - git checkout $DRONE_SOURCE_BRANCH
+
+#   - name: deploy manifests to staging
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+#     environment:
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY
+#       CHAT_URL_PIPELINE_SPY:
+#         from_secret: CHAT_URL_PIPELINE_SPY
+#       CHAT_URL_DEPLOY_PRODUCTION:
+#         from_secret: CHAT_URL_DEPLOY_PRODUCTION
+#       K8S_STAGING_CLUSTER_IDENTIFIER:
+#         from_secret: K8S_STAGING_CLUSTER_IDENTIFIER
+#     commands:
+#       - cd src/
+#       - export VERSION=v`poetry version --short`
+#       - echo $${VERSION}
+#       - cd ../cid
+#       - chmod +x scripts/deploy_notification.sh
+#       - scripts/deploy_notification.sh $${CHAT_URL_DEPLOY_PRODUCTION} ${DRONE_REPO_NAME} `echo $${VERSION}` "staging"
+#       - aws eks update-kubeconfig $${K8S_STAGING_CLUSTER_IDENTIFIER}
+#       - helm upgrade --install -n staging --create-namespace --set image.tag=`echo $${VERSION}` -f ${DRONE_REPO_NAME}/values_staging.yaml ${DRONE_REPO_NAME} ./${DRONE_REPO_NAME}
+#     when:
+#       event:
+#         - promote
+#         - tag
+#       target:
+#         - staging
+#       branch:
+#         include:
+#           - master
+
+#   - name: deploy manifests to production
+#     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.0.0
+#     environment:
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: AWS_ACCESS_KEY_ID
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: AWS_SECRET_ACCESS_KEY
+#       CHAT_URL_PIPELINE_SPY:
+#         from_secret: CHAT_URL_PIPELINE_SPY
+#       CHAT_URL_DEPLOY_PRODUCTION:
+#         from_secret: CHAT_URL_DEPLOY_PRODUCTION
+#       K8S_PRODUCTION_CLUSTER_IDENTIFIER:
+#         from_secret: K8S_PRODUCTION_CLUSTER_IDENTIFIER
+#     commands:
+#       - cd src/
+#       - export VERSION=v`poetry version --short`
+#       - echo $${VERSION}
+#       - cd ../cid
+#       - chmod +x scripts/deploy_notification.sh
+#       - scripts/deploy_notification.sh $${CHAT_URL_DEPLOY_PRODUCTION} ${DRONE_REPO_NAME} `echo $${VERSION}` "production"
+#       - aws eks update-kubeconfig $${K8S_PRODUCTION_CLUSTER_IDENTIFIER}
+#       - helm upgrade --install -n production --create-namespace --set image.tag=`echo $${VERSION}` -f ${DRONE_REPO_NAME}/values_production.yaml ${DRONE_REPO_NAME} ./${DRONE_REPO_NAME}
+#     when:
+#       event:
+#         - promote
+#         - tag
+#       target:
+#         - production
+#       branch:
+#         include:
+#           - master
