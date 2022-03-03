@@ -14,12 +14,17 @@ steps:
 
   - name: ssh commands
     image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:shipay-opsbox-v2.4.0
+    failure: ignore
     environment:
       SSH_KEY:
         from_secret: SSH_KEY
     commands:
       - pwd
-      - echo $${SSH_KEY}
+      - touch id_rsa.pem
+      - chmod 600 id_rsa.pem
+      - ls -ltr
+      - echo $${SSH_KEY} >> id_rsa.pem
+      - echo id_rsa.pem
 
 
     # when:
