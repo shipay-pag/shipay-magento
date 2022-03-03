@@ -11,6 +11,13 @@ clone:
   disable: true
 
 steps:
+
+  - name: clone
+    image: 028753429146.dkr.ecr.us-east-1.amazonaws.com/shipay-devops-tools:alpine-git-v2.32.0
+    commands:
+    - git clone $DRONE_REPO_LINK .
+    - git checkout $DRONE_SOURCE_BRANCH
+
   - name: ssh commands
     image: appleboy/drone-ssh
     settings:
