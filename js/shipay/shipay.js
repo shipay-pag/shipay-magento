@@ -47,7 +47,7 @@ function maskPostalCode(cep) {
 }
 
 function openTermsPopup() {
-  var baseUrl = window.origin;
+  var baseUrl = Mage::getStoreConfig('payment/shipay_payments/base_url') ? Mage::getStoreConfig('payment/shipay_payments/base_url') : window.origin;
   var dataHtml = '';
 
   fetch(`${baseUrl}/shipaymagento19/terms`)

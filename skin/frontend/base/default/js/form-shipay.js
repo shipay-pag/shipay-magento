@@ -1,7 +1,7 @@
 let arrayWallets;
 
 setInterval(function () {
-    var baseUrl = window.origin;
+    var baseUrl = Mage::getStoreConfig('payment/shipay_payments/base_url') ? Mage::getStoreConfig('payment/shipay_payments/base_url') : window.origin;
     var orderId = document.getElementById('orderid').value;
 
     if (orderId) {
@@ -35,7 +35,7 @@ function copyTextSucess() {
 }
 
 function getWallets() {
-    var baseUrl = window.origin;
+    var baseUrl = Mage::getStoreConfig('payment/shipay_payments/base_url') ? Mage::getStoreConfig('payment/shipay_payments/base_url') : window.origin;
 
     fetch(`${baseUrl}/shipaymagento19/wallets`)
         .then(response => response.json())
