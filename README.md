@@ -56,6 +56,7 @@ Então, nesta parte vamos ter 2 etapas de configuração.
 - **Debug:** campo que possibilita a ativação e a desativação da ferramente debug do módulo:
   - Sim - as requisições e respostas serão armazenadas em um arquivo chamado "shipay.log".
   - Não - as requisições e respostas não serão armazenadas.
+- **Base URL:** URL base do site (necessário preencher somente em caso de haver extras na URL Ex: `https://shipay.com.br/(extra1)/(extra2)`).
 
 
 

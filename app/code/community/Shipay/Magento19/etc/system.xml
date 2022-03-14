@@ -69,6 +69,15 @@
               <show_in_website>1</show_in_website>
               <show_in_store>0</show_in_store>
             </debug>
+            <base_url translate="label">
+              <label>Base URL</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>90</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <comment>URL base do site (necessário preencher somente em caso de haver extras na URL Ex: https://shipay.com.br/(extra1)/(extra2))</comment>
+            </base_url>
           </fields>
         </shipay_payments>
 

@@ -39,6 +39,7 @@
 
         <input type="hidden" class="validate-method-payment" id="wallet-name" name="payment[wallet-name]" />
         <input type="hidden" id="pix-dict-key" name="payment[pix-dict-key]" />
+        <input type="hidden" id="shipay-base-url" value="<?= Mage::getStoreConfig('payment/shipay_payments/base_url') ?>" />
 
         <div class="methods">
             <?php foreach ($arrayWallets as $wallet) : ?>
