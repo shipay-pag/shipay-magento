@@ -44,7 +44,7 @@ $orderId = $this->getOrderId();
 </style>
 
 <?php if ($payment->getMethod() == 'shipay_payments') : ?>
-
+    <input type="hidden" id="shipay-base-url" value="<?= Mage::getStoreConfig('payment/shipay_payments/base_url') ?>" />
     <input type="hidden" id="orderid" name="orderid" value="<?= $orderId ?>">  
 
     <div class="inputs">
