@@ -29,9 +29,7 @@ setInterval(function () {
 }, 60000);
 
 function copyTextSucess() {
-    navigator.clipboard.writeText(document.getElementById('qrcode-text').value).then(function () {
-    }, function () {
-    });
+    document.execCommand('copy', false, document.getElementById('qrcode-text').select());
 }
 
 function getWallets() {
