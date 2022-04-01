@@ -89,7 +89,7 @@
           <cron_expr>0 23 */2 * *</cron_expr>
         </schedule>
         <run>
-          <model>magento19/observer::refreshToken</model>
+          <model>shipay_magento19/observer::refreshToken</model>
         </run>
       </refresh_token_shipay>
       <verify_order_status>
@@ -97,7 +97,7 @@
           <cron_expr>*/5 * * * *</cron_expr>
         </schedule>
         <run>
-          <model>magento19/observer::verifyOrderStatus</model>
+          <model>shipay_magento19/observer::verifyOrderStatus</model>
         </run>
       </verify_order_status>
     </jobs>
