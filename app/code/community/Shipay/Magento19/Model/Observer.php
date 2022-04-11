@@ -97,37 +97,37 @@ class Shipay_Magento19_Model_Observer {
       $method = $order->getPayment()->getMethod();
 
       if ($method == 'shipay_payments') {
-        $createdAt = $order->getCreatedAt();
-        $createdAt = $this->sumDateToCompareShipay($createdAt);
-        $currentDate = date("Y-m-d h:i:s");
+        $orderTransId = $order->getPayment()->getCcTransId();
+        $response     = $this->doVerifyRequest($orderTransId);
+        $status       = $this->getStatus($response);
 
-        if ($createdAt < $currentDate) {
-          $orderTransId = $order->getPayment()->getCcTransId();
-          $response = $this->doVerifyRequest($orderTransId);
-          $status = $this->getStatus($response);
+        if ($status == 'approved') {
+          $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+          $order->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+          $order->save();
 
-          if ($status == 'approved') {
-            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
-            $order->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING, true);
-            $order->save();
-          } else if ($status == 'cancelled' || $status == 'expired') {
-            $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true);
-            $order->setStatus(Mage_Sales_Model_Order::STATE_CANCELED, true);
-            $order->cancel();
-            $order->save();
+          $paymentHelper = Mage::helper('shipay_magento19/data');
+
+          if($paymentHelper->isAutomaticInvoice()){
+            $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+
+            $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
+            $invoice->register();
+            
+            $transactionSave = Mage::getModel('core/resource_transaction')
+                ->addObject($invoice)
+                ->addObject($invoice->getOrder());
+            $transactionSave->save();
           }
+
+        } else if ($status == 'cancelled' || $status == 'expired') {
+          $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true);
+          $order->setStatus(Mage_Sales_Model_Order::STATE_CANCELED, true);
+          $order->cancel();
+          $order->save();
         }
       }
     }
-  }
-
-   /**
-   * Function to sum 3 days in createdAt date order
-   * @param string $createdAt
-   * @return string
-   */
-  public function sumDateToCompareShipay($createdAt): string {
-    return date("Y-m-d h:i:s", strtotime('+3 days', strtotime($createdAt)));
   }
 
   /**
