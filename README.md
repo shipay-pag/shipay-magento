@@ -115,3 +115,13 @@ Ao acessar:
 Após o preenchimento o usuário será redirecionado para o painel *Shipay*.
 
 **Observação:** para que o registro seja funcional, deve ser configurado a "Access Key do Sistema de PDV" e "ID do Sistema de PDV", nas configurações do módulo.
+
+#### Shipay - Fatura automática
+
+Dentro do painel do Magento é possível definir se a fatura será gerada automaticamente após a aprovação do pagamento.
+
+![image](https://user-images.githubusercontent.com/41929217/166060777-a174195b-cb5f-4188-871d-bbf8e7a04af7.png)
+
+#### Shipay - Status do pagamento
+
+A mudança de status de pagamento do pedido após a compra, é controlado por meio de crons instaladas no Magento. Esses scripts irão ser executados em curtos intervalos de minutos e possuem a função de monitorar os pedidos que estão com status de pagamento pendente, bem como atualizar os status dos mesmos. Caso os pagamentos estejam aprovados, o status irá mudar para processando, permitindo a finalização do pedido.
