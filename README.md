@@ -52,7 +52,7 @@ Então, nesta parte vamos ter 2 etapas de configuração.
   - Não - cliente não precisará preencher seu documento no checkout.
   - **Observação:** se marcar como **Não**, você deve setar como obrigatório o campo `Exibir CPF/CNPJ`.
     - **Exibir CPF/CNPJ:** `Sistema` -> `Configuração` -> `Clientes` -> `Configurações` -> `Opções de Nome e Endereço` -> `Exibir CPF/CNPJ`. **Obrigatório**.
-- **Configurar tempo de expiração do Pix:** neste campo você pode configurar o **tempo de expiração** de um pedido `Pix`. A unidade informada deve ser em **`segundos`**
+- **Configurar tempo de expiração do Pix:** neste campo você **DEVE** inserir o **tempo de expiração**: 3600. A unidade informada deve ser em **`segundos`** **ATENÇÃO: pedidos DIFERENTES de 3600 terão problemas em sua APROVAÇÃO.**
 - **Debug:** campo que possibilita a ativação e a desativação da ferramente debug do módulo:
   - Sim - as requisições e respostas serão armazenadas em um arquivo chamado "shipay.log".
   - Não - as requisições e respostas não serão armazenadas.
